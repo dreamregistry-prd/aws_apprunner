@@ -1,5 +1,5 @@
 terraform {
-  #  backend "s3" {}
+  backend "s3" {}
   required_version = ">= 1.0.0, < 2.0.0"
   required_providers {
     aws = {
@@ -35,15 +35,16 @@ locals {
 }
 
 module "docker_build" {
-  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.4.0"
+  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.5.0"
   providers = {
     aws.us-east-1 = aws.us-east-1
   }
-  source_dir    = var.dream_project_dir
-  source_bucket = var.source_bucket
-  image_tags    = var.image_tags
-  image_name    = var.image_name
-  builder       = var.builder
+  source_dir              = var.dream_project_dir
+  source_bucket           = var.source_bucket
+  image_tags              = var.image_tags
+  image_name              = var.image_name
+  builder                 = var.builder
+  force_delete_repository = var.force_delete_repository
 }
 
 
