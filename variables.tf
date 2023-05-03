@@ -1,16 +1,7 @@
 variable "dream_env" {
   description = "dream app environment variables to set"
   type        = any
-  default     = {
-    NODE_ENV       = "production"
-    GREETING       = "Hello"
-    SESSION_SECRET = {
-      key    = "/session_secret/eminent-haddock"
-      arn    = "arn:aws:ssm:eu-west-1:918474371518:parameter/session_secret/eminent-haddock"
-      region = "eu-west-1"
-      type   = "ssm"
-    }
-  }
+  default     = {}
 }
 
 variable "dream_project_dir" {
