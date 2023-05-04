@@ -82,7 +82,7 @@ resource "aws_apprunner_service" "app" {
 }
 
 resource "aws_apprunner_auto_scaling_configuration_version" "app" {
-  auto_scaling_configuration_name = local.name
+  auto_scaling_configuration_name = substr(local.name, 0, 32)
   max_concurrency                 = 100
   max_size                        = 3
   min_size                        = 1
