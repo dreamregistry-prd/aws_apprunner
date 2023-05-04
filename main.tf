@@ -134,6 +134,7 @@ resource "aws_iam_role" "instance" {
 }
 
 data "aws_iam_policy_document" "instance" {
+  count = length(local.secrets) > 0 ? 1 : 0
   statement {
     effect    = "Allow"
     actions   = ["ssm:GetParameters"]
@@ -144,11 +145,13 @@ data "aws_iam_policy_document" "instance" {
 }
 
 resource "aws_iam_policy" "instance" {
-  policy = data.aws_iam_policy_document.instance.json
+  count = length(local.secrets) > 0 ? 1 : 0
+  policy = data.aws_iam_policy_document.instance.0.json
 }
 
 resource "aws_iam_role_policy_attachment" "instance" {
-  policy_arn = aws_iam_policy.instance.arn
+  count = length(local.secrets) > 0 ? 1 : 0
+  policy_arn = aws_iam_policy.instance.0.arn
   role       = aws_iam_role.instance.name
 }
 

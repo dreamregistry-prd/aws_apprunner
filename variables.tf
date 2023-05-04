@@ -44,3 +44,15 @@ variable "force_delete_repository" {
   default     = true
 }
 
+variable "domain_prefix" {
+  description = "domain prefix to use for the service"
+  type        = string
+  default     = null
+}
+
+variable "domain_suffix" {
+  description = "domain suffix to use for the service"
+  type        = string
+  default     = null
+}
+
