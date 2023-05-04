@@ -84,8 +84,8 @@ resource "aws_apprunner_service" "app" {
 resource "aws_apprunner_auto_scaling_configuration_version" "app" {
   auto_scaling_configuration_name = substr(local.name, 0, 32)
   max_concurrency                 = 100
-  max_size                        = 3
-  min_size                        = 1
+  max_size                        = var.min_replicas
+  min_size                        = var.max_replicas
 
   tags = {
     Name = "${local.name}-auto-scaling-configuration"
@@ -145,12 +145,12 @@ data "aws_iam_policy_document" "instance" {
 }
 
 resource "aws_iam_policy" "instance" {
-  count = length(local.secrets) > 0 ? 1 : 0
+  count  = length(local.secrets) > 0 ? 1 : 0
   policy = data.aws_iam_policy_document.instance.0.json
 }
 
 resource "aws_iam_role_policy_attachment" "instance" {
-  count = length(local.secrets) > 0 ? 1 : 0
+  count      = length(local.secrets) > 0 ? 1 : 0
   policy_arn = aws_iam_policy.instance.0.arn
   role       = aws_iam_role.instance.name
 }

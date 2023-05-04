@@ -20,6 +20,18 @@ variable "service_port" {
   default     = 8080
 }
 
+variable "min_replicas" {
+  default     = 0
+  type        = number
+  description = "minimum number of replicas to run"
+}
+
+variable "max_replicas" {
+  default     = 3
+  type        = number
+  description = "maximum number of replicas to run"
+}
+
 variable "image_name" {
   description = "name of the docker image to build without the namespace. Uses the project dir name by default"
   type        = string
