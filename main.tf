@@ -84,8 +84,8 @@ resource "aws_apprunner_service" "app" {
 resource "aws_apprunner_auto_scaling_configuration_version" "app" {
   auto_scaling_configuration_name = substr(local.name, 0, 32)
   max_concurrency                 = 100
-  max_size                        = var.min_replicas
-  min_size                        = var.max_replicas
+  min_size                        = var.min_replicas
+  max_size                        = var.max_replicas
 
   tags = {
     Name = "${local.name}-auto-scaling-configuration"
