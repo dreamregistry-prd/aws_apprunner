@@ -21,7 +21,7 @@ variable "service_port" {
 }
 
 variable "min_replicas" {
-  default     = 0
+  default     = 1
   type        = number
   description = "minimum number of replicas to run"
 }
