@@ -35,16 +35,17 @@ locals {
 }
 
 module "docker_build" {
-  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.8.0"
+  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.10.0"
   providers = {
     aws.us-east-1 = aws.us-east-1
   }
   source_dir              = var.dream_project_dir
-  source_bucket           = var.source_bucket
   image_tags              = var.image_tags
   image_name              = var.image_name
   builder                 = var.builder
   force_delete_repository = var.force_delete_repository
+  codecommit_password_key = var.codecommit_password_key
+  codecommit_username     = var.codecommit_username
 }
 
 

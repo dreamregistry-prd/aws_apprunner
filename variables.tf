@@ -9,10 +9,14 @@ variable "dream_project_dir" {
   type        = string
 }
 
-variable "source_bucket" {
-  description = "bucket to store the source code in"
-  type        = string
+variable "codecommit_password_key" {
+  description = "The name of the key in SSM Parameter Store that contains the CodeCommit password"
 }
+
+variable "codecommit_username" {
+  description = "The username to use when authenticating to CodeCommit"
+}
+
 
 variable "service_port" {
   description = "port to expose the service on"
