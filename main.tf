@@ -35,7 +35,7 @@ locals {
 }
 
 module "docker_build" {
-  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.12.0"
+  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.13.0"
   providers = {
     aws.us-east-1 = aws.us-east-1
   }
