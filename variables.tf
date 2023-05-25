@@ -72,3 +72,20 @@ variable "domain_suffix" {
   default     = null
 }
 
+variable "live_version" {
+  type        = string
+  description = "The version of the service to deploy to set as live: blue or green"
+  default     = "blue"
+}
+
+variable "enable_blue_green" {
+  type        = bool
+  description = "If true, the service will be deployed using blue/green deployment"
+  default     = false
+}
+
+variable "deploy_new_version" {
+  type        = bool
+  description = "If true, the old version of the service will be destroyed on deploy. Is set to true if enable_blue_green is false"
+  default     = false
+}

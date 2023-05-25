@@ -5,3 +5,4 @@ terraform.tfstate*
 /.idea
 /.source.zip
 /.DS_Store
+/.dream
