@@ -1,5 +1,5 @@
 terraform {
-  backend "s3" {}
+#  backend "s3" {}
   required_version = ">= 1.0.0, < 2.0.0"
   required_providers {
     aws = {
@@ -35,7 +35,7 @@ locals {
 }
 
 module "docker_build" {
-  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.17.0"
+  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.20.0"
   providers = {
     aws.us-east-1 = aws.us-east-1
   }

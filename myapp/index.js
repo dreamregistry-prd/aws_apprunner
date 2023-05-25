@@ -8,7 +8,7 @@ const port = process.env.PORT || 8080;
 app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
-    res.send('Hi there: let\'s switch to BLUE!');
+    res.send('Hi there!');
 });
 
 app.listen(port, () => {
