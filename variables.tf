@@ -72,3 +72,14 @@ variable "domain_suffix" {
   default     = null
 }
 
+variable "use_apex_domain" {
+  description = "If true, the service will be exposed on the apex domain"
+  type        = bool
+  default     = false
+}
+
+variable "apprunner_zone_id" {
+  description = "Aws Apprunner Route 53 Hosted Zone ID to use for alias records"
+  type        = string
+  default     = null
+}
