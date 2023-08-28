@@ -20,6 +20,7 @@ locals {
   non_secret_env = {
     for k, v in var.dream_env : k => try(tostring(v), null)
   }
+  //noinspection HILUnresolvedReference
   secret_env = {
     for k, v in var.dream_env : k => try(tostring(v.arn), null)
   }
@@ -35,7 +36,7 @@ locals {
 }
 
 module "docker_build" {
-  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.20.0"
+  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.31.0"
   providers = {
     aws.us-east-1 = aws.us-east-1
   }
@@ -46,6 +47,8 @@ module "docker_build" {
   force_delete_repository = var.force_delete_repository
   codecommit_password_key = var.codecommit_password_key
   codecommit_username     = var.codecommit_username
+  dockerhub_password      = var.dockerhub_password
+  dockerhub_username      = var.dockerhub_username
 }
 
 

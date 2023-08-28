@@ -83,3 +83,12 @@ variable "apprunner_zone_id" {
   type        = string
   default     = null
 }
+
+variable "dockerhub_username" {
+  description = "The username to use when authenticating to the docker registry"
+}
+
+variable "dockerhub_password" {
+  sensitive   = true
+  description = "The password to use when authenticating to the docker registry"
+}
