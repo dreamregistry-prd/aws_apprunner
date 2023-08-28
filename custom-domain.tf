@@ -1,6 +1,7 @@
 locals {
-  apex_domain_name               = var.use_apex_domain && var.domain_prefix == null && var.domain_suffix != null && var.apprunner_zone_id != null ? var.domain_suffix : null
-  subdomain_name                 = var.domain_prefix != null && var.domain_suffix != null ? "${var.domain_prefix}.${var.domain_suffix}" : null
+  domain_suffix = var.is_private_domain ? var.public_domain_suffix: var.domain_suffix
+  apex_domain_name               = var.use_apex_domain && var.domain_prefix == null && local.domain_suffix != null && var.apprunner_zone_id != null ? local.domain_suffix : null
+  subdomain_name                 = var.domain_prefix != null && local.domain_suffix != null ? "${var.domain_prefix}.${local.domain_suffix}" : null
   domain_name                    = local.subdomain_name != null ? local.subdomain_name : (local.apex_domain_name != null ? local.apex_domain_name : null)
   certificate_validation_records = local.domain_name != null ? tolist(
     aws_apprunner_custom_domain_association.app.0.certificate_validation_records
@@ -15,7 +16,7 @@ resource "aws_apprunner_custom_domain_association" "app" {
 
 data "aws_route53_zone" "domain" {
   count = local.domain_name != null ? 1 : 0
-  name  = var.domain_suffix
+  name  = local.domain_suffix
 }
 
 resource "aws_route53_record" "app" {

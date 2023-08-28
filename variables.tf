@@ -72,6 +72,18 @@ variable "domain_suffix" {
   default     = null
 }
 
+variable "is_private_domain" {
+  description = "Whether the Route53 zone is private or not"
+  type        = bool
+  default     = false
+}
+
+variable "public_domain_suffix" {
+  type        = string
+  description = "The public domain suffix used in case domain_suffix is private. For now this package only work with public domain."
+  default     = null
+}
+
 variable "use_apex_domain" {
   description = "If true, the service will be exposed on the apex domain"
   type        = bool
