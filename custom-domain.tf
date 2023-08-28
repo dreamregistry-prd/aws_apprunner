@@ -1,5 +1,5 @@
 locals {
-  domain_suffix = var.is_private_domain ? var.public_domain_suffix: var.domain_suffix
+  domain_suffix                  = var.is_private_domain ? var.public_domain_suffix : var.domain_suffix
   apex_domain_name               = var.use_apex_domain && var.domain_prefix == null && local.domain_suffix != null && var.apprunner_zone_id != null ? local.domain_suffix : null
   subdomain_name                 = var.domain_prefix != null && local.domain_suffix != null ? "${var.domain_prefix}.${local.domain_suffix}" : null
   domain_name                    = local.subdomain_name != null ? local.subdomain_name : (local.apex_domain_name != null ? local.apex_domain_name : null)
