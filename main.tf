@@ -116,7 +116,7 @@ resource "aws_apprunner_service" "app" {
 resource "aws_apprunner_vpc_connector" "connector" {
   vpc_connector_name = local.name
   subnets            = data.aws_subnets.private.ids
-  security_groups    = [local.name]
+  security_groups    = [aws_security_group.connector.id]
 }
 
 resource "aws_security_group" "connector" {
