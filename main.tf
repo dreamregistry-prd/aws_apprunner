@@ -28,7 +28,7 @@ locals {
   env = merge({
     PORT = var.service_port
   }, {
-    for k, v in local.non_secret_env : k => v if v != null
+    for k, v in local.non_secret_env : k => v if v != null && !startswith(k, "IAM_POLICY_")
   })
   secrets = {
     for k, v in local.secret_env : k => v if v != null
