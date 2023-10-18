@@ -33,6 +33,10 @@ locals {
   secrets = {
     for k, v in local.secret_env : k => v if v != null
   }
+
+  policy_env = {
+    for k, v in var.dream_env : k => v if startswith(k, "IAM_POLICY_")
+  }
 }
 
 module "docker_build" {
@@ -159,4 +163,14 @@ resource "aws_iam_role_policy_attachment" "instance" {
   role       = aws_iam_role.instance.name
 }
 
+resource "aws_iam_policy" "policy_from_env" {
+  for_each    = local.policy_env
+  description = "Grants required permissions to app runner app"
+  policy      = each.value
+}
 
+resource "aws_iam_role_policy_attachment" "policy_from_env" {
+  for_each   = local.policy_env
+  policy_arn = aws_iam_policy.policy_from_env[each.key].arn
+  role       = aws_iam_role.instance.name
+}
