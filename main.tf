@@ -116,20 +116,7 @@ resource "aws_apprunner_service" "app" {
 resource "aws_apprunner_vpc_connector" "connector" {
   vpc_connector_name = local.name
   subnets            = data.aws_subnets.private.ids
-  security_groups    = [aws_security_group.connector.id]
-}
-
-resource "aws_security_group" "connector" {
-  name = local.name
-}
-
-resource "aws_security_group_rule" "allow_all_outbound" {
-  security_group_id = aws_security_group.connector.id
-  type              = "egress"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
-  cidr_blocks       = ["0.0.0.0/0"]
+  security_groups    = []
 }
 
 
