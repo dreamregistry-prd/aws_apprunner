@@ -39,6 +39,20 @@ locals {
   }
 }
 
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnets" "private" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+  tags = {
+    Tier = "private"
+  }
+}
+
 module "docker_build" {
   source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.31.0"
   providers = {
@@ -81,6 +95,16 @@ resource "aws_apprunner_service" "app" {
     instance_role_arn = aws_iam_role.instance.arn
   }
 
+  network_configuration {
+    egress_configuration {
+      egress_type = "VPC"
+      vpc_connector_arn = aws_apprunner_vpc_connector.connector.arn
+    }
+    ingress_configuration {
+      is_publicly_accessible = true
+    }
+  }
+
 
   tags = {
     Name = local.name
@@ -88,6 +112,26 @@ resource "aws_apprunner_service" "app" {
 
   depends_on = [module.docker_build]
 }
+
+resource "aws_apprunner_vpc_connector" "connector" {
+  vpc_connector_name = local.name
+  subnets            = data.aws_subnets.private.ids
+  security_groups    = [local.name]
+}
+
+resource "aws_security_group" "connector" {
+  name = local.name
+}
+
+resource "aws_security_group_rule" "allow_all_outbound" {
+  security_group_id = aws_security_group.connector.id
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
 
 resource "aws_apprunner_auto_scaling_configuration_version" "app" {
   auto_scaling_configuration_name = substr(local.name, 0, 32)
