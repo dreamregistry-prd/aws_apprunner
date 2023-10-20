@@ -54,7 +54,7 @@ data "aws_subnets" "private" {
 }
 
 module "docker_build" {
-  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.31.0"
+  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.32.0"
   providers = {
     aws.us-east-1 = aws.us-east-1
   }
