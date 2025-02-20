@@ -36,6 +36,18 @@ variable "max_replicas" {
   description = "maximum number of replicas to run"
 }
 
+variable "cpu" {
+  description = "cpu to use for the service"
+  type        = string
+  default     = "1024" # 1 vCPU
+}
+
+variable "memory" {
+  description = "memory to use for the service"
+  type        = string
+  default     = "2048" # 2 GB
+}
+
 variable "image_name" {
   description = "name of the docker image to build without the namespace. Uses the project dir name by default"
   type        = string

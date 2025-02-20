@@ -16,7 +16,7 @@ provider "aws" {
 }
 
 locals {
-  name           = module.docker_build.image_name
+  name = module.docker_build.image_name
   non_secret_env = {
     for k, v in var.dream_env : k => try(tostring(v), null)
   }
@@ -27,7 +27,7 @@ locals {
 
   env = merge({
     PORT = var.service_port
-  }, {
+    }, {
     for k, v in local.non_secret_env : k => v if v != null && !startswith(k, "IAM_POLICY_")
   })
   secrets = {
@@ -54,7 +54,7 @@ data "aws_subnets" "private" {
 }
 
 module "docker_build" {
-  source    = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.33.0"
+  source = "github.com/hereya/terraform-modules//docker-build/module?ref=v0.33.0"
   providers = {
     aws.us-east-1 = aws.us-east-1
   }
@@ -93,11 +93,13 @@ resource "aws_apprunner_service" "app" {
 
   instance_configuration {
     instance_role_arn = aws_iam_role.instance.arn
+    cpu               = var.cpu
+    memory            = var.memory
   }
 
   network_configuration {
     egress_configuration {
-      egress_type = "VPC"
+      egress_type       = "VPC"
       vpc_connector_arn = aws_apprunner_vpc_connector.connector.arn
     }
     ingress_configuration {
@@ -149,7 +151,7 @@ data "aws_iam_policy_document" "app_runner_assume" {
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
     principals {
-      type        = "Service"
+      type = "Service"
       identifiers = [
         "build.apprunner.amazonaws.com",
       ]
@@ -172,7 +174,7 @@ data "aws_iam_policy_document" "instance_assume" {
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
     principals {
-      type        = "Service"
+      type = "Service"
       identifiers = [
         "tasks.apprunner.amazonaws.com"
       ]
@@ -188,8 +190,8 @@ resource "aws_iam_role" "instance" {
 data "aws_iam_policy_document" "instance" {
   count = length(local.secrets) > 0 ? 1 : 0
   statement {
-    effect    = "Allow"
-    actions   = ["ssm:GetParameters"]
+    effect  = "Allow"
+    actions = ["ssm:GetParameters"]
     resources = [
       for k, v in local.secrets : v
     ]
